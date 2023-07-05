@@ -1,11 +1,13 @@
 #!/usr/bin/env sh
 
+set -Eeuo pipefail
+
 INPUT="$1"
 
-DIR=$(dirname $INPUT)
+DIR=$(dirname "$INPUT")
 OUTDIR="redacted/$DIR"
 
-FILE=$(basename $INPUT)
+FILE=$(basename "$INPUT")
 OUTFILE="$OUTDIR/$FILE"
 
 mkdir -p "$OUTDIR"
