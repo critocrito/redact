@@ -12,4 +12,4 @@ OUTFILE="$OUTDIR/$FILE"
 
 mkdir -p "$OUTDIR"
 
-poetry run redact_pdfs/redact.py --redactions redactions.txt --input "$INPUT" --output "$OUTFILE"
+poetry run python redact_pdfs/redact.py --redactions redactions.txt --input "$INPUT" --output "$OUTFILE"
