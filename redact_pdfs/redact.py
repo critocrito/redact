@@ -49,17 +49,33 @@ class Redactor:
 
         # saving it to a new pdf
         doc.save(self.output)
-        logging.info(
-            f"Successfully redacted {count} areas in {self.input} ({self.output})"
-        )
+
+        if count > 0:
+            logging.info(f"Successfully redacted {count} areas in {self.input}.")
+        else:
+            logging.info(f"{self.input} had no redactions.")
 
 
 @click.command()
 @click.option("--redactions", type=click.File("r"), help="List of terms to redact.")
 @click.option("--input", type=click.Path(exists=True), help="The file to redact.")
 @click.option("--output", type=click.Path(), help="Output redacted file to this path.")
-def main(redactions, input, output):
-    logging.basicConfig(stream=sys.stdout)
+@click.option(
+    "--log-file", type=click.Path(), help="Path to log file..", default="out.log"
+)
+def main(redactions, input, output, log_file):
+    logFormatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s]  %(message)s")
+    rootLogger = logging.getLogger()
+
+    fileHandler = logging.FileHandler(log_file)
+    fileHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(fileHandler)
+
+    consoleHandler = logging.StreamHandler(sys.stdout)
+    consoleHandler.setFormatter(logFormatter)
+    rootLogger.addHandler(consoleHandler)
+
+    rootLogger.setLevel(logging.DEBUG)
 
     redactions_re = []
     for line in redactions.readlines():
