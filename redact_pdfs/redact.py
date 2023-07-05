@@ -98,7 +98,7 @@ def document_to_pdf(unique_tmpdir, file_path, timeout=TIMEOUT):
 
     try:
         for attempt in range(1, CONVERT_RETRIES):
-            logging.info(
+            logging.debug(
                 f"Starting LibreOffice: %s with timeout %s attempt #{attempt}/{CONVERT_RETRIES}",
                 cmd,
                 timeout,
@@ -106,7 +106,7 @@ def document_to_pdf(unique_tmpdir, file_path, timeout=TIMEOUT):
             try:
                 subprocess.run(cmd, timeout=timeout, check=True)
             except Exception as e:
-                logging.info(
+                logging.debug(
                     f"Could not be converted to PDF (attempt {attempt}/{CONVERT_RETRIES}): {e}"
                 )
                 continue
@@ -117,7 +117,7 @@ def document_to_pdf(unique_tmpdir, file_path, timeout=TIMEOUT):
                 out_file = os.path.join(pdf_output_dir, file_name)
                 if os.stat(out_file).st_size == 0:
                     continue
-                logging.info(f"Successfully converted {out_file}")
+                logging.debug(f"Successfully converted {out_file}")
                 return out_file
         raise ProcessingException(
             f"Could not be converted to PDF (attempt #{attempt}/{CONVERT_RETRIES})"
@@ -145,22 +145,22 @@ def main(redactions, input, output, log_file):
     consoleHandler.setFormatter(logFormatter)
     rootLogger.addHandler(consoleHandler)
 
-    rootLogger.setLevel(logging.DEBUG)
+    rootLogger.setLevel(logging.INFO)
 
     redactions_re = []
     for line in redactions.readlines():
         redactions_re.append(line.strip())
 
-    with tempfile.TemporaryDirectory() as unique_tmpdir:
-        # TODO - write to logs the case in which the context manager can't delete these dirs
-        pdf_path = document_to_pdf(unique_tmpdir, input)
+    try:
+        with tempfile.TemporaryDirectory() as unique_tmpdir:
+            # TODO - write to logs the case in which the context manager can't delete these dirs
+            pdf_path = document_to_pdf(unique_tmpdir, input)
 
-        redactor = Redactor(
-            pdf_path,
-            output,
-        )
+            redactor = Redactor(pdf_path, output)
 
-        redactor.redaction(redactions_re)
+            redactor.redaction(redactions_re)
+    except Exception as e:
+        logging.error(f"Could not blacken {input}: {e}")
 
 
 if __name__ == "__main__":
