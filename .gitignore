@@ -1,0 +1,49 @@
+!.keep
+
+.DS_Store
+.idea
+*.log
+tmp/
+
+# will have all output artifacts
+/target
+
+# Secrets
+.env
+
+# Rust
+**/*.rs.bk
+
+# NodeJS
+node_modules
+yarn*.log
+npm*.log
+.node_repl_history
+
+# Typescript
+.log
+*.tsbuildinfo
+
+# Vite
+dist
+
+# Eslint
+.eslintcache
+
+# Python
+.python-version
+__pycache__
+*.py[cod]
+*.egg
+build
+htmlcov
+.venv
+
+# direnv
+.envrc
+.direnv
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
