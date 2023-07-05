@@ -23,6 +23,7 @@ class Redactor:
     def redaction(self, redactions):
         """main redactor code"""
         doc = fitz.open(self.input)
+        count = 0
 
         for page in doc:
             # _wrapContents is needed for fixing
@@ -41,12 +42,16 @@ class Redactor:
                 # drawing outline over sensitive datas
                 [page.add_redact_annot(area, fill=(0, 0, 0)) for area in areas]
 
+                count += 1
+
             # applying the redaction
             page.apply_redactions()
 
         # saving it to a new pdf
         doc.save(self.output)
-        logging.info(f"Successfully redacted {self.input} to {self.output}")
+        logging.info(
+            f"Successfully redacted {count} areas in {self.input} ({self.output})"
+        )
 
 
 @click.command()
