@@ -73,7 +73,7 @@ class Redactor:
 
 def document_to_pdf(unique_tmpdir, file_path, timeout=TIMEOUT):
     """Converts an office document to PDF."""
-    logging.info("Converting [%s] to PDF", file_path)
+    logging.debug("Converting [%s] to PDF", file_path)
 
     pdf_output_dir = os.path.join(unique_tmpdir, "out")
     libreoffice_profile_dir = os.path.join(unique_tmpdir, "profile")
