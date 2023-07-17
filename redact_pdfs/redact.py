@@ -7,6 +7,7 @@ import os
 import pathlib
 import subprocess
 import tempfile
+import extract_msg
 
 
 TIMEOUT = 3600  # seconds
@@ -29,9 +30,10 @@ class Redactor:
 
                     yield search.group(0)
 
-    def __init__(self, input, output):
+    def __init__(self, input, output, original):
         self.input = input
         self.output = output
+        self.original = original
 
     def redaction(self, redactions):
         """main redactor code"""
@@ -64,9 +66,9 @@ class Redactor:
         doc.save(self.output)
 
         if count > 0:
-            logging.info(f"Successfully redacted {count} areas in {self.input}.")
+            logging.info(f"Successfully redacted {count} areas in {self.original}.")
         else:
-            logging.info(f"{self.input} had no redactions.")
+            logging.info(f"{self.original} had no redactions.")
 
 
 def document_to_pdf(unique_tmpdir, file_path, timeout=TIMEOUT):
@@ -126,6 +128,15 @@ def document_to_pdf(unique_tmpdir, file_path, timeout=TIMEOUT):
         raise ProcessingException("Could not be converted to PDF") from e
 
 
+def email_to_pdf(outdir, file_path):
+    """Converts a outlook email message to a pdf."""
+    out_file = os.path.join(outdir, "out", "message.pdf")
+    msg = extract_msg.openMsg(file_path)
+    msg.save(pdf=True, customPath=outdir, customFilename="out")
+
+    return out_file
+
+
 @click.command()
 @click.option("--redactions", type=click.File("r"), help="List of terms to redact.")
 @click.option("--input", type=click.Path(exists=True), help="The file to redact.")
@@ -154,9 +165,11 @@ def main(redactions, input, output, log_file):
     try:
         with tempfile.TemporaryDirectory() as unique_tmpdir:
             # TODO - write to logs the case in which the context manager can't delete these dirs
-            pdf_path = document_to_pdf(unique_tmpdir, input)
+            pdf_path = email_to_pdf(unique_tmpdir, input)
 
-            redactor = Redactor(pdf_path, output)
+            print(pdf_path)
+
+            redactor = Redactor(pdf_path, output, input)
 
             redactor.redaction(redactions_re)
     except Exception as e:
