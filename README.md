@@ -2,6 +2,8 @@
 
 > Automatically redact files based on a list of regular expressions.
 
+**WARNING**: There is no guarentee that all occurences that require redaction are caught by this program. Make sure to manually verify the quality of the redactions.
+
 ## Installation
 
 Install [Poetry](https://python-poetry.org/docs/#installation) to manage depencies of `redact`. Once installed setup the dependencies:
