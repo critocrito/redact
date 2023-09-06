@@ -5,6 +5,7 @@ import sys
 import tempfile
 import logging
 
+from . import AppEnvironment
 from .redact import Redactor
 from .actions import email_to_pdf
 
@@ -16,7 +17,14 @@ from .actions import email_to_pdf
 @click.option(
     "--log-file", type=click.Path(), help="Path to log file..", default="out.log"
 )
-def main(redactions, input, output, log_file):
+@click.option(
+    "--libreoffice",
+    type=click.Path(),
+    help="provide the path to the libreoffice (soffice) binary.",
+    default="/usr/bin/libreoffice")
+def main(redactions, input, output, log_file, libreoffice):
+    env = AppEnvironment(libreoffice)
+
     logFormatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s]  %(message)s")
     rootLogger = logging.getLogger()
 
@@ -37,10 +45,7 @@ def main(redactions, input, output, log_file):
     try:
         with tempfile.TemporaryDirectory() as unique_tmpdir:
             # TODO - write to logs the case in which the context manager can't delete these dirs
-            pdf_path = email_to_pdf(unique_tmpdir, input)
-
-            print(pdf_path)
-
+            pdf_path = email_to_pdf(env, unique_tmpdir, input)
             redactor = Redactor(pdf_path, output, input)
 
             redactor.redaction(redactions_re)
