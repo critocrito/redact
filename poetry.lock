@@ -395,28 +395,28 @@ tests = ["asttokens", "littleutils", "pytest", "rich"]
 
 [[package]]
 name = "extract-msg"
-version = "0.41.5"
+version = "0.45.0"
 description = "Extracts emails and attachments saved in Microsoft Outlook's .msg files"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "extract_msg-0.41.5-py2.py3-none-any.whl", hash = "sha256:ad70dcdab3701b0fae554168c9642ad4ebef7f2ec283313c55e895a6518911e5"},
-    {file = "extract_msg-0.41.5.tar.gz", hash = "sha256:99d4fdc0c0912c836370bf9fbb6e77558bb978499c1b5fdd31634684e323885c"},
+    {file = "extract_msg-0.45.0-py2.py3-none-any.whl", hash = "sha256:af645ffe1534bce93b20390576dac2aee027c17a714365172d31b3894f810ca7"},
+    {file = "extract_msg-0.45.0.tar.gz", hash = "sha256:6814865cf2ba806bd69af53af688a13e000a95d4991cce6a0416b3bdeb739496"},
 ]
 
 [package.dependencies]
 beautifulsoup4 = ">=4.11.1,<4.13"
-chardet = ">=4.0.0,<6"
 compressed-rtf = ">=1.0.6,<2"
 ebcdic = ">=1.1.1,<2"
 imapclient = ">=2.3.0,<3"
 olefile = "0.46"
 red-black-tree-mod = "1.20"
-RTFDE = "0.0.2"
+RTFDE = ">=0.1.0,<0.2"
 tzlocal = ">=4.2,<6"
 
 [package.extras]
-all = ["extract-msg[mime]"]
+all = ["extract-msg[image]", "extract-msg[mime]"]
+image = ["Pillow (>=9.5.0,<10)"]
 mime = ["python-magic (>=0.4.27,<0.5)"]
 
 [[package]]
@@ -497,14 +497,14 @@ qa = ["flake8 (==5.0.4)", "mypy (==0.971)", "types-setuptools (==67.2.0.1)"]
 testing = ["Django (<3.1)", "attrs", "colorama", "docopt", "pytest (<7.0.0)"]
 
 [[package]]
-name = "lark-parser"
-version = "0.12.0"
+name = "lark"
+version = "1.1.5"
 description = "a modern parsing library"
 optional = false
 python-versions = "*"
 files = [
-    {file = "lark-parser-0.12.0.tar.gz", hash = "sha256:15967db1f1214013dca65b1180745047b9be457d73da224fcda3d9dd4e96a138"},
-    {file = "lark_parser-0.12.0-py2.py3-none-any.whl", hash = "sha256:0eaf30cb5ba787fe404d73a7d6e61df97b21d5a63ac26c5008c78a494373c675"},
+    {file = "lark-1.1.5-py3-none-any.whl", hash = "sha256:8476f9903e93fbde4f6c327f74d79e9b4bd0ed9294c5dfa3164ab8c581b5de2a"},
+    {file = "lark-1.1.5.tar.gz", hash = "sha256:4b534eae1f9af5b4ea000bea95776350befe1981658eea3820a01c37e504bb4d"},
 ]
 
 [package.extras]
@@ -823,21 +823,21 @@ files = [
 
 [[package]]
 name = "rtfde"
-version = "0.0.2"
+version = "0.1.0"
 description = "A library for extracting HTML content from RTF encapsulated HTML as commonly found in the exchange MSG email format."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "RTFDE-0.0.2-py3-none-any.whl", hash = "sha256:18386e4f060cee12a2a8035b0acf0cc99689f5dff1bf347bab7e92351860a21d"},
-    {file = "RTFDE-0.0.2.tar.gz", hash = "sha256:b86b5d734950fe8745a5b89133f50554252dbd67c6d1b9265e23ee140e7ea8a2"},
+    {file = "RTFDE-0.1.0-py3-none-any.whl", hash = "sha256:a110dbef435803f3fba717d51a7b9c7a92695c2461637cc6eaf36a9f54386e26"},
+    {file = "RTFDE-0.1.0.tar.gz", hash = "sha256:12215ee59856208010b9200c19afe0f9fa13a3fb39f44015979299c248cbacd7"},
 ]
 
 [package.dependencies]
-lark-parser = ">=0.11"
+lark = "1.1.5"
 oletools = ">=0.56"
 
 [package.extras]
-dev = ["lxml (>=4.6)"]
+dev = ["coverage (>=7.2.2)", "lxml (>=4.6)", "mypy (>=1.1.1)", "pdoc3 (>=0.10.0)"]
 msg-parse = ["extract-msg (>=0.27)"]
 
 [[package]]
@@ -970,4 +970,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "1b4fdb5d82cd45dc52def227bde35e75e95fc25e832121c182a8aaba3fed1f67"
+content-hash = "4b06ee3ad3f8608ef2e282c0db95ff7864ff93e2c6678dabf7d4c6b3d890b8a0"
