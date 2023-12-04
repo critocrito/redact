@@ -14,7 +14,7 @@ pantomime = "^0.6.1"
 python-magic = "^0.4.27"
 
 [tool.poetry.group.dev.dependencies]
-ipython = "^8.17.2"
+ipython = "^8.18.1"
 
 [build-system]
 requires = ["poetry-core"]
