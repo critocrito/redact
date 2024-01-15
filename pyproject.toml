@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pymupdf = "^1.23.6"
+pymupdf = "^1.23.12"
 click = "^8.1.3"
 extract-msg = "^0.46"
 pantomime = "^0.6.1"
